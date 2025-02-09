@@ -33,7 +33,7 @@ void instructions() {
         << std::endl;
 }
 
-void configureLegs(PCA9685 &pca1, PCA9685 *pca2 = nullptr) {
+void configureLegs(PCA9685& pca1, PCA9685* pca2) {
     instructions();
 
     std::cout << "Enter total amount of legs to configure:\n";

@@ -1,3 +1,4 @@
+#include <memory>
 #include "RobotConfig.h"
 
 int main() {
@@ -6,11 +7,11 @@ int main() {
     std::cin >> pcaAmount;
 
     PCA9685 pca1(0x40);
-    PCA9685* pca2 = nullptr; 
+    std::unique_ptr<PCA9685> pca2; 
 
     if (pcaAmount == 2) {
-        pca2 = new PCA9685(0x41);
-        configureLegs(pca1, pca2);
+        pca2 = std::make_unique<PCA9685>(0x41);
+        configureLegs(pca1, pca2.get());
     } else {
         configureLegs(pca1);
     }
