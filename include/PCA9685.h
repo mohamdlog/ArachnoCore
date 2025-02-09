@@ -31,7 +31,7 @@ public:
     ~PCA9685();
 
     void setChannelPulse(size_t leg, size_t channel, float pulse_ms);
-    void addLeg(uint8_t ch0, uint8_t ch1, uint8_t ch2);
+    void addLeg(size_t ch0, size_t ch1, size_t ch2);
     size_t legsAmount() const;
 };
 

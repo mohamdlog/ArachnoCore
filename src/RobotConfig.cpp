@@ -33,7 +33,7 @@ void instructions() {
         << std::endl;
 }
 
-void configureLegs(PCA9685& pca1, PCA9685* pca2) {
+void configureLegs(PCA9685& pca1, PCA9685* pca2 = nullptr) {
     instructions();
 
     std::cout << "Enter total amount of legs to configure:\n";
@@ -54,7 +54,7 @@ void configureLegs(PCA9685& pca1, PCA9685* pca2) {
         }
     
         std::istringstream iss(input);
-        uint8_t ch0, ch1, ch2;
+        size_t ch0, ch1, ch2;
     
         if (iss >> ch0 >> ch1 >> ch2) {
             pca1.addLeg(ch0, ch1, ch2);
@@ -78,7 +78,7 @@ void configureLegs(PCA9685& pca1, PCA9685* pca2) {
             }
     
             std::istringstream iss(input);
-            uint8_t ch0, ch1, ch2;
+            size_t ch0, ch1, ch2;
     
             if (iss >> ch0 >> ch1 >> ch2) {
                 pca2->addLeg(ch0, ch1, ch2);
