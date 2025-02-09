@@ -1,11 +1,9 @@
+#include <sstream>
 #include "PCA9685.h"
-#include "RobotLeg.h"
-#include <iostream>
-#include <map>
 
 void instructions() {
     std::cout 
-        << "=== Arachnid Leg Channel Assignment Guide ===\n\n"
+        << "\n=== Arachnid Leg Channel Assignment Guide ===\n\n"
         << "Each arachnid leg consists of three servo channels:\n"
         << "  - Base     (Channels: 0, 3, 6, ...)\n"
         << "  - Shoulder (Channels: 1, 4, 7, ...)\n"
@@ -35,35 +33,59 @@ void instructions() {
         << std::endl;
 }
 
-void configureLegs(PCA9685 &pca, PCA9685 *pca2 = nullptr, int pcaAmount) {
+void configureLegs(PCA9685 &pca, PCA9685 *pca2 = nullptr) {
     instructions();
 
     std::cout << "Enter total amount of legs to configure:\n";
     int legsAmount, currentLeg = 1;
     std::cin >> legsAmount;
+    std::cout << "\nSetting up channels at address 0x40. Press Enter anytime to complete setup.";
+    std::cin.ignore(1, '\n');
 
-    std::cout << "Setting up channels at address 0x40. Press Enter anytime to complete setup.";
+    for (; currentLeg <= legsAmount; currentLeg++) {
+        std::cout << "\nEnter the 3 channels for leg " << currentLeg << ", each separated by a space:\n";
 
-    for (; currentLeg < legsAmount; currentLeg++) {
-        std::cout << "\nEnter the 3 channels for leg " << currentLeg << ", each seperated by a space: ";
-        int ch0, ch1, ch2;
-        if (!(std::cin >> ch0 >> ch1 >> ch2)) {
+        std::string input;
+        std::getline(std::cin, input);
+
+        if (input.empty()) {
             std::cout << "Exiting...\n";
             break;
         }
-        pca.addLeg(ch0, ch1, ch2);
+    
+        std::istringstream iss(input);
+        int ch0, ch1, ch2;
+    
+        if (iss >> ch0 >> ch1 >> ch2) {
+            pca.addLeg(ch0, ch1, ch2);
+        } else {
+            std::cout << "Invalid input, please enter three numbers.\n";
+            currentLeg--;
+        }
     }
-
+    
     if (pca2) {
         std::cout << "Setting up channels at address 0x41. Press Enter anytime to complete setup.";
-        for (; currentLeg < legsAmount; currentLeg++) {
-            std::cout << "\nEnter the 3 channels for leg " << currentLeg << ", each seperated by a space: ";
-            int ch0, ch1, ch2;
-            if (!(std::cin >> ch0 >> ch1 >> ch2)) {
+        for (; currentLeg <= legsAmount; currentLeg++) {
+            std::cout << "\nEnter the 3 channels for leg " << currentLeg << ", each separated by a space:\n";
+    
+            std::string input;
+            std::getline(std::cin, input);
+            
+            if (input.empty()) {
                 std::cout << "Exiting...\n";
                 break;
             }
-            pca.addLeg(ch0, ch1, ch2);
+    
+            std::istringstream iss(input);
+            int ch0, ch1, ch2;
+    
+            if (iss >> ch0 >> ch1 >> ch2) {
+                pca2->addLeg(ch0, ch1, ch2);
+            } else {
+                std::cout << "Invalid input, please enter three numbers.\n";
+                currentLeg--;
+            }
         }
     }
 }

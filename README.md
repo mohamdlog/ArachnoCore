@@ -2,10 +2,10 @@
 ArachnoCore is a robotics framework designed for developing and controlling arachnid-inspired robots using Raspberry Pi and I2C/SPI communication protocols. This guide provides setup and configuration instructions for the hardware and software components.
 
 ## Prerequisites
-- [**Headless Server Environment**](https://ubuntu.com/download/raspberry-pi/thank-you?version=24.04.1&architecture=server-arm64+raspi)
-- **Raspberry Pi 4B**
-- **PCA9685 servo driver chip**
-- **Dependencies:**
+- [Headless Server Environment](https://ubuntu.com/download/raspberry-pi/thank-you?version=24.04.1&architecture=server-arm64+raspi)
+- Raspberry Pi 4B
+- PCA9685 Servo Driver Chip (1 or 2, depending on your setup)
+- Dependencies:
     ```bash
     sudo apt-get install i2c-tools libi2c-dev
     ```
