@@ -33,17 +33,17 @@ void instructions() {
         << std::endl;
 }
 
-void configureLegs(PCA9685& pca1, PCA9685* pca2 = nullptr) {
+void setupPCA(PCA9685& pca) {
     instructions();
 
-    std::cout << "Enter total amount of legs to configure:\n";
-    size_t legsAmount, currentLeg = 1;
+    std::cout << "Enter total amount of legs to configure for chip address " << pca.getAddress() <<":\n";
+    size_t legsAmount;
     std::cin >> legsAmount;
-    std::cout << "\nSetting up channels at address 0x40. Press Enter anytime to complete setup.";
+    std::cout << "\nSetting up channels at chip address " << pca.getAddress() << ". Press Enter at anytime to complete setup.";
     std::cin.ignore(1, '\n');
 
-    for (; currentLeg <= legsAmount; currentLeg++) {
-        std::cout << "\nEnter the 3 channels for leg " << currentLeg << ", each separated by a space:\n";
+    for (size_t leg = 1; leg <= legsAmount; leg++) {
+        std::cout << "\nEnter the 3 channels for leg " << leg << ", each separated by a space:\n";
 
         std::string input;
         std::getline(std::cin, input);
@@ -57,35 +57,10 @@ void configureLegs(PCA9685& pca1, PCA9685* pca2 = nullptr) {
         size_t ch0, ch1, ch2;
     
         if (iss >> ch0 >> ch1 >> ch2) {
-            pca1.addLeg(ch0, ch1, ch2);
+            pca.addLeg(ch0, ch1, ch2);
         } else {
             std::cout << "Invalid input, please enter three numbers.\n";
-            currentLeg--;
-        }
-    }
-    
-    if (pca2) {
-        std::cout << "Setting up channels at address 0x41. Press Enter anytime to complete setup.";
-        for (; currentLeg <= legsAmount; currentLeg++) {
-            std::cout << "\nEnter the 3 channels for leg " << currentLeg << ", each separated by a space:\n";
-    
-            std::string input;
-            std::getline(std::cin, input);
-            
-            if (input.empty()) {
-                std::cout << "Exiting...\n";
-                break;
-            }
-    
-            std::istringstream iss(input);
-            size_t ch0, ch1, ch2;
-    
-            if (iss >> ch0 >> ch1 >> ch2) {
-                pca2->addLeg(ch0, ch1, ch2);
-            } else {
-                std::cout << "Invalid input, please enter three numbers.\n";
-                currentLeg--;
-            }
+            leg--;
         }
     }
 }

@@ -2,10 +2,10 @@
 CXX = g++
 
 # Compiler flags
-CXXFLAGS = -g -I./include -Wall -Wextra -std=c++17
+CXXFLAGS = -g -I./include -Wall -Wextra -std=c++20
 
 # Source files
-SRC = src/main.cpp src/PCA9685.cpp src/RobotConfig.cpp  
+SRC = $(shell find src -type f -name "*.cpp")
 
 # Object files
 OBJ = $(SRC:.cpp=.o)

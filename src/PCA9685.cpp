@@ -17,13 +17,13 @@ void PCA9685::setServoPulse(uint8_t channel, float pulse_ms) {
     writeRegister(off_high, (off_value >> 8) & 0x0F);
 }
 
-PCA9685::PCA9685(uint8_t address) {
+PCA9685::PCA9685(uint8_t newAddress) : address(newAddress) {
     if ((i2c_fd = open(I2C_DEV, O_RDWR)) < 0) {
         std::cerr << "Failed to open I2C bus" << std::endl;
         return;
     }
 
-    if (ioctl(i2c_fd, I2C_SLAVE, address) < 0) {
+    if (ioctl(i2c_fd, I2C_SLAVE, newAddress) < 0) {
         std::cerr << "Failed to set I2C address" << std::endl;
         return;
     }
@@ -45,6 +45,10 @@ void PCA9685::setChannelPulse(size_t leg, size_t channel, float pulse_ms) {
 
 void PCA9685::addLeg(size_t ch0, size_t ch1, size_t ch2) {
     legs.emplace_back(RobotLeg(ch0, ch1, ch2));
+}
+
+std::string PCA9685::getAddress() {
+    return std::format("0x{:02X}", address);
 }
 
 size_t PCA9685::legsAmount() const {
