@@ -1,9 +1,8 @@
-#include <iostream>
 #include "RobotConfig.h"
 
 int main() {
     std::cout << "Are you using one or two PCA9685 chips? (1 | 2)\n";
-    int pcaAmount;
+    size_t pcaAmount;
     std::cin >> pcaAmount;
 
     PCA9685 pca1(0x40);
@@ -16,14 +15,14 @@ int main() {
         configureLegs(pca1);
     }
     
-    for (int i = 0; i < pca1.legsAmount(); i++) {
-        for (int j = 0; j < 3; j++) {
+    for (size_t i = 0; i < pca1.legsAmount(); i++) {
+        for (size_t j = 0; j < 3; j++) {
             pca1.setChannelPulse(i, j, 1.5);
         }
     }
 
-    for (int i = 0; i < pca2->legsAmount(); i++) {
-        for (int j = 0; j < 3; j++) {
+    for (size_t i = 0; i < pca2->legsAmount(); i++) {
+        for (size_t j = 0; j < 3; j++) {
             pca2->setChannelPulse(i, j, 1.5);
         }
     }

@@ -5,6 +5,6 @@
 
 void instructions();
 
-void configureLegs(PCA9685 &pca, PCA9685 *pca2 = nullptr);
+void configureLegs(PCA9685 &pca1, PCA9685 *pca2 = nullptr);
 
 #endif // ROBOTCONFIG_H

@@ -19,8 +19,8 @@ extern "C" {
 class PCA9685 {
 private:
     int i2c_fd;
-    const char* I2C_DEV = "/dev/i2c-1";
-    const int PRESCALER_50HZ = 121;
+    static constexpr const char* I2C_DEV = "/dev/i2c-1";
+    static constexpr uint8_t PRESCALER_50HZ = 121;
     std::vector<RobotLeg> legs;
 
     void writeRegister(uint8_t reg, uint8_t value);
@@ -30,9 +30,9 @@ public:
     explicit PCA9685(uint8_t address);
     ~PCA9685();
 
-    void setChannelPulse(int leg, int channel, float pulse_ms);
-    void addLeg(int ch0, int ch1, int ch2);
-    int legsAmount() const;
+    void setChannelPulse(size_t leg, size_t channel, float pulse_ms);
+    void addLeg(uint8_t ch0, uint8_t ch1, uint8_t ch2);
+    size_t legsAmount() const;
 };
 
 #endif // PCA9685_H

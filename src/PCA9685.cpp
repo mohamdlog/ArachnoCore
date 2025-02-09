@@ -38,15 +38,15 @@ PCA9685::~PCA9685() {
     if (i2c_fd >= 0) close(i2c_fd);
 }
 
-void PCA9685::setChannelPulse(int leg, int channel, float pulse_ms) {
+void PCA9685::setChannelPulse(size_t leg, size_t channel, float pulse_ms) {
     uint8_t pulsed = legs[leg][channel];
     setServoPulse(pulsed, pulse_ms);
 }
 
-void PCA9685::addLeg(int ch0, int ch1, int ch2) {
-    legs.push_back(RobotLeg(ch0, ch1, ch2));
+void PCA9685::addLeg(uint8_t ch0, uint8_t ch1, uint8_t ch2) {
+    legs.emplace_back(RobotLeg(ch0, ch1, ch2));
 }
 
-int PCA9685::legsAmount() const {
+size_t PCA9685::legsAmount() const {
     return legs.size();
 }
