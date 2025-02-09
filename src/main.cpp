@@ -7,14 +7,15 @@ int main() {
     size_t pcaAmount;
     std::cin >> pcaAmount;
 
-    std::vector<PCA9685> chips;
+    std::vector<std::unique_ptr<PCA9685>> chips;
+    chips.reserve(pcaAmount);
 
     for (size_t chip = 0; chip < pcaAmount; chip++) {
-        chips.emplace_back(PCA9685(0x40 + chip));
+        chips.emplace_back(std::make_unique<PCA9685>(0x40 + chip));
     }
 
     for (auto& chip : chips) {
-        setupPCA(chip);
+        setupPCA(*chip);
     }
 
     move(chips);
