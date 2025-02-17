@@ -1,6 +1,6 @@
 #include <vector>
-#include "RobotConfig.h"
-#include "MoverNode.h"
+#include "RobotConfig.hpp"
+#include "MoverNode.hpp"
 
 int main() {
     std::cout << "Enter the amount of PCA9685 chips you're using:\n";
