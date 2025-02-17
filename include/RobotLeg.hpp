@@ -1,5 +1,4 @@
-#ifndef ROBOTLEG_H
-#define ROBOTLEG_H
+#pragma once
 
 #include <array>
 
@@ -16,5 +15,3 @@ struct RobotLeg {
         return channels[index];
     }
 };
-
-#endif // ROBOTLEG_H

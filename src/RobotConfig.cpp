@@ -1,4 +1,6 @@
-#include "PCA9685.h"
+#include <fstream>
+#include "external/json.hpp"
+#include "PCA9685.hpp"
 
 void instructions() {
     std::cout 
@@ -32,17 +34,38 @@ void instructions() {
         << std::endl;
 }
 
+void loadFile(PCA9685& pca) {
+    nlohmann::json jsonObj;
+    std::ifstream file("config.txt");
+    file >> jsonObj;
+
+    auto& channels = jsonObj[pca.getAddress()]["channels"];
+
+    for (size_t leg = 0; leg < channels.size(); leg++) {
+        pca.addLeg(channels[leg]);
+    }
+}
+
 void setupPCA(PCA9685& pca) {
     instructions();
+
+    std::cout << "Would you like to load configuration from config.txt for chip address " << pca.getAddress() << " (y/n): ";
+    char load;
+    std::cin >> load;
+    if (load == 'y') {
+        loadFile(pca);
+        return;
+    }
 
     std::cout << "Enter total amount of legs to configure for chip address " << pca.getAddress() <<":\n";
     size_t legsAmount;
     std::cin >> legsAmount;
 
+    std::array<size_t, 3> channels;
+    
     for (size_t leg = 1; leg <= legsAmount; leg++) {
         std::cout << "\nEnter the 3 channels for leg " << leg << ", each separated by a space:\n";
-        size_t ch0, ch1, ch2;
-        std::cin >> ch0 >> ch1 >> ch2;
-        pca.addLeg(ch0, ch1, ch2);
+        std::cin >> channels[0] >> channels[1] >> channels[2];
+        pca.addLeg(channels);
     }
 }

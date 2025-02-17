@@ -1,10 +1,8 @@
-#ifndef PCA9685_H
-#define PCA9685_H
+#pragma once
 
 #include <iostream>
 #include <vector>
 #include <cstdint>
-#include <format>
 
 #include <sys/ioctl.h>
 #include <fcntl.h>
@@ -15,7 +13,7 @@ extern "C" {
     #include <i2c/smbus.h>
 }
 
-#include "RobotLeg.h"
+#include "RobotLeg.hpp"
 
 class PCA9685 {
 private:
@@ -33,9 +31,7 @@ public:
     ~PCA9685();
 
     void setChannelPulse(size_t leg, size_t channel, float pulse_ms);
-    void addLeg(size_t ch0, size_t ch1, size_t ch2);
+    void addLeg(auto& channelArray);
     std::string getAddress();
     size_t legsAmount() const;
 };
-
-#endif // PCA9685_H
