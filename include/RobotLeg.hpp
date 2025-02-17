@@ -3,15 +3,15 @@
 #include <array>
 
 struct RobotLeg {
-    std::array<size_t, 3> channels;
+    std::array<short, 3> channels;
 
-    RobotLeg(size_t ch0, size_t ch1, size_t ch2) : channels{ch0, ch1, ch2} {}
+    RobotLeg(short ch0, short ch1, short ch2) : channels{ch0, ch1, ch2} {}
 
-    size_t& operator[](size_t index) {
+    short& operator[](short index) {
         return channels[index];
     }
 
-    const size_t& operator[](size_t index) const {
+    const short& operator[](short index) const {
         return channels[index];
     }
 };

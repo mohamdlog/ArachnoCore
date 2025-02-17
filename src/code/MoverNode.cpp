@@ -3,7 +3,7 @@
 
 void move(std::vector<std::unique_ptr<PCA9685>>& chips) {
     std::cout
-            << "\n=== For testing purpose ===\n\n"
+            << "\n=== For testing purposes ===\n\n"
             << "Enter PCA9865 chip number, leg number, channel number,\n"
             << "and pulse width in milliseconds to control movement.\n"
             << "Press Enter at anytime to exit.\nExample Input: 2 1 0 1.5\n";
@@ -16,11 +16,12 @@ void move(std::vector<std::unique_ptr<PCA9685>>& chips) {
     
         if (input.empty()) {
             std::cout << "Exiting...\n";
-            return;
+            std::this_thread::sleep_for(std::chrono::seconds(2));
+            break;
         }
     
         std::istringstream iss(input);
-        size_t chipNumber, leg, channel;
+        unsigned short chipNumber, leg, channel;
         float pulse;
     
         if (!(iss >> chipNumber >> leg >> channel >> pulse)) {

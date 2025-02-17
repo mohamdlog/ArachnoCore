@@ -3,10 +3,11 @@
 #include <iostream>
 #include <vector>
 #include <cstdint>
+#include <memory>
 
 #include <sys/ioctl.h>
 #include <fcntl.h>
-#include <unistd.h>
+#include <thread>
 
 extern "C" {
     #include <linux/i2c-dev.h>
@@ -30,8 +31,8 @@ public:
     explicit PCA9685(uint8_t newAddress);
     ~PCA9685();
 
-    void setChannelPulse(size_t leg, size_t channel, float pulse_ms);
-    void addLeg(auto& channelArray);
+    void setChannelPulse(short leg, short channel, float pulse_ms);
+    void addLeg(std::array<short, 3>& channels);
     std::string getAddress();
-    size_t legsAmount() const;
+    short legsAmount() const;
 };

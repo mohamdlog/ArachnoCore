@@ -2,6 +2,9 @@
 
 #include "PCA9685.hpp"
 
+extern std::vector<std::unique_ptr<PCA9685>> chips;
+
+void prepareChips();
 void instructions();
-void loadFile(PCA9685& pca);
-void setupPCA(PCA9685& pca);
+void autoRegister();
+void manualRegister();
