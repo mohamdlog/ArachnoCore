@@ -49,14 +49,6 @@ void loadFile(PCA9685& pca) {
 void setupPCA(PCA9685& pca) {
     instructions();
 
-    std::cout << "Would you like to load configuration from config.txt for chip address " << pca.getAddress() << " (y/n): ";
-    char load;
-    std::cin >> load;
-    if (load == 'y') {
-        loadFile(pca);
-        return;
-    }
-
     std::cout << "Enter total amount of legs to configure for chip address " << pca.getAddress() <<":\n";
     size_t legsAmount;
     std::cin >> legsAmount;

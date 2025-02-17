@@ -16,7 +16,7 @@ void move(std::vector<std::unique_ptr<PCA9685>>& chips) {
     
         if (input.empty()) {
             std::cout << "Exiting...\n";
-            break;
+            return;
         }
     
         std::istringstream iss(input);
