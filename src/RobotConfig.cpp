@@ -1,6 +1,8 @@
 #include <fstream>
-#include "external/json.hpp"
-#include "PCA9685.hpp"
+#include "../external/json.hpp"
+#include "RobotConfig.hpp"
+
+std::vector<std::unique_ptr<PCA9685>> chips;
 
 void instructions() {
     std::cout 
@@ -34,30 +36,64 @@ void instructions() {
         << std::endl;
 }
 
-void loadFile(PCA9685& pca) {
-    nlohmann::json jsonObj;
-    std::ifstream file("config.txt");
-    file >> jsonObj;
+void prepareChips(short pcaAmount) {
+    chips.reserve(pcaAmount);
 
-    auto& channels = jsonObj[pca.getAddress()]["channels"];
-
-    for (size_t leg = 0; leg < channels.size(); leg++) {
-        pca.addLeg(channels[leg]);
+    for (short chip = 0; chip < pcaAmount; chip++) {
+        chips.emplace_back(std::make_unique<PCA9685>(0x40 + chip));
     }
 }
 
-void setupPCA(PCA9685& pca) {
-    instructions();
+void autoRegister() {
+    nlohmann::json jsonObj;
+    std::ifstream file("src/config.json");
+    file >> jsonObj;
 
-    std::cout << "Enter total amount of legs to configure for chip address " << pca.getAddress() <<":\n";
-    size_t legsAmount;
-    std::cin >> legsAmount;
+    prepareChips(jsonObj.size());
 
-    std::array<size_t, 3> channels;
+    std::array<short, 3> channels;
+
+    for (auto& chip : chips) {
+        const auto& legs = jsonObj[chip->getAddress()]["channels"];
     
-    for (size_t leg = 1; leg <= legsAmount; leg++) {
-        std::cout << "\nEnter the 3 channels for leg " << leg << ", each separated by a space:\n";
-        std::cin >> channels[0] >> channels[1] >> channels[2];
-        pca.addLeg(channels);
+        for (const auto& leg : legs) {
+            std::tie(channels[0], channels[1], channels[2]) =
+                std::make_tuple(leg[0].get<short>(), leg[1].get<short>(), leg[2].get<short>());
+            chip->addLeg(channels);
+        }
     }
+    std::cout 
+        << "Legs and channels have been automatically registered from config.json.\n"
+        << "Returning to main menu...\n\n";
+
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+}
+
+void manualRegister() {
+    std::cout << "Enter the amount of PCA9685 chips you're using:\n";
+    short pcaAmount;
+    std::cin >> pcaAmount;
+
+    prepareChips(pcaAmount);
+
+    for (auto& chip : chips) {
+        instructions();
+
+        std::cout << "Enter total amount of legs to configure for chip address " << chip->getAddress() <<":\n";
+        short legsAmount;
+        std::cin >> legsAmount;
+    
+        std::array<short, 3> channels;
+        
+        for (short leg = 1; leg <= legsAmount; leg++) {
+            std::cout << "\nEnter the 3 channels for leg " << leg << ", each separated by a space:\n";
+            std::cin >> channels[0] >> channels[1] >> channels[2];
+            chip->addLeg(channels);
+        }
+    }
+    std::cout 
+        << "Legs and channels have been manually registered\n"
+        << "Returning to main menu...\n\n";
+
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 }

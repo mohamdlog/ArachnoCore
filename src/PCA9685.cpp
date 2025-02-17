@@ -32,26 +32,26 @@ PCA9685::PCA9685(uint8_t newAddress) : address(newAddress) {
     writeRegister(0x00, 0x10);  // Enter sleep mode
     writeRegister(0xFE, PRESCALER_50HZ); // Set prescaler
     writeRegister(0x00, 0x80);  // Wake up
-    usleep(5000);               // Wait for oscillator
+    std::this_thread::sleep_for(std::chrono::milliseconds(5)); // Wait for oscillator
 }
 
 PCA9685::~PCA9685() {
     if (i2c_fd >= 0) close(i2c_fd);
 }
 
-void PCA9685::setChannelPulse(size_t leg, size_t channel, float pulse_ms) {
+void PCA9685::setChannelPulse(short leg, short channel, float pulse_ms) {
     uint8_t pulsed = legs[leg][channel];
     setServoPulse(pulsed, pulse_ms);
 }
 
-void PCA9685::addLeg(auto& channelsArray) {
-    legs.emplace_back(RobotLeg(channelsArray[0], channelsArray[1], channelsArray[2]));
+void PCA9685::addLeg(std::array<short, 3>& channels) {
+    legs.emplace_back(RobotLeg(channels[0], channels[1], channels[2]));
 }
 
 std::string PCA9685::getAddress() {
     return std::format("0x{:02X}", address);
 }
 
-size_t PCA9685::legsAmount() const {
+short PCA9685::legsAmount() const {
     return legs.size();
 }
