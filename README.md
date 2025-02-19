@@ -48,6 +48,16 @@ ArachnoCore is a robotics framework designed for developing and controlling arac
     i2cdump -y 1 0x40
     ```
 
+## Software Setup
+1. Compile the program (run in the project root directory):
+   ```bash
+   make
+   ```
+2. Run the program
+   ```bash
+   ./ArachnoCore
+   ```
+
 ## Troubleshooting
 - **SPI/I2C Conflicts:** Ensure only required protocols are enabled in /boot/firmware/config.txt.
 

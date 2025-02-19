@@ -1,5 +1,5 @@
 #include <format>
-#include "PCA9685.hpp"
+#include "utils/PCA9685.hpp"
 
 void PCA9685::writeRegister(uint8_t reg, uint8_t value) {
     if (i2c_smbus_write_byte_data(i2c_fd, reg, value) < 0) {
@@ -45,7 +45,7 @@ void PCA9685::setChannelPulse(short leg, short channel, float pulse_ms) {
 }
 
 void PCA9685::addLeg(std::array<short, 3>& channels) {
-    legs.emplace_back(RobotLeg(channels[0], channels[1], channels[2]));
+    legs.emplace_back(channels);
 }
 
 std::string PCA9685::getAddress() {

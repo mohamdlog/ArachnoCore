@@ -1,36 +1,33 @@
-#include <sstream>
-#include "MoverNode.hpp"
+#include "nodes/test.hpp"
+#include "utils/utils.hpp"
 
 void move(std::vector<std::unique_ptr<PCA9685>>& chips) {
     std::cout
             << "\n=== For testing purposes ===\n\n"
             << "Enter PCA9865 chip number, leg number, channel number,\n"
-            << "and pulse width in milliseconds to control movement.\n"
+            << "and pulse width in milliseconds to test movement.\n"
             << "Press Enter at anytime to exit.\nExample Input: 2 1 0 1.5\n";
-    std::cin.ignore(1);
+    
+    std::string input;
 
-    while (true) {
-        std::cout << "\nInput: ";
-        std::string input;
-        std::getline(std::cin, input);
-    
-        if (input.empty()) {
-            std::cout << "Exiting...\n";
-            std::this_thread::sleep_for(std::chrono::seconds(2));
-            break;
-        }
-    
+    while (!(input = checkExit()).empty()) {
         std::istringstream iss(input);
         unsigned short chipNumber, leg, channel;
         float pulse;
     
+        if (chips.size() == 0) {
+            std::cout << "Warning: No chips registered. Please return to main menu and register chips.\n";
+            exitProgram();
+            return;
+        }
+
         if (!(iss >> chipNumber >> leg >> channel >> pulse)) {
             std::cout << "Invalid input, please enter four numbers.\n";
             continue;
         }
     
         if (chipNumber == 0 || chipNumber > chips.size()) {
-            std::cout << "Error: chipNumber is out of bounds. Valid range is 1 to " << chips.size() << ".\n";
+            std::cout << "Error: chipNumber is out of bounds. The limit is " << chips.size() << ".\n";
             continue;
         }
     

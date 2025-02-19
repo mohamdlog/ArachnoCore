@@ -1,5 +1,5 @@
 #pragma once
 
-#include "RobotConfig.hpp"
+#include "core/config.hpp"
 
 void mainMenu();

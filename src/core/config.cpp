@@ -1,16 +1,17 @@
 #include <fstream>
+#include "core/config.hpp"
+#include "utils/utils.hpp"
 #include "../external/json.hpp"
-#include "RobotConfig.hpp"
 
 std::vector<std::unique_ptr<PCA9685>> chips;
 
 void instructions() {
     std::cout 
-        << "\n=== Arachnid Leg Channel Assignment Guide ===\n\n"
+        << "\n=== Config.json Channel Assignment Guide ===\n\n"
         << "Each arachnid leg consists of three servo channels:\n"
-        << "  - Base     (Channels: 0, 3, 6, ...)\n"
-        << "  - Shoulder (Channels: 1, 4, 7, ...)\n"
-        << "  - Arm      (Channels: 2, 5, 8, ...)\n\n"
+        << "  - Leg 1    (Channels: 0, 1, 2, ...)\n"
+        << "  - Leg 2    (Channels: 3, 4, 5, ...)\n"
+        << "  - Leg 3    (Channels: 6, 7, 8, ...)\n\n"
         
         << "When entering channels, follow this pattern:\n"
         << "  - Leg 1: Base = Channel 0, Shoulder = Channel 1, Arm = Channel 2\n"
@@ -32,8 +33,11 @@ void instructions() {
         << "  - Follow the numbering pattern above, starting with Leg 1 on your right side\n"
         << "    (which corresponds to the arachnid's left side).\n\n"
         
-        << "Video guide coming soon!\n"
+        << "Each chip exmaple in config.json consists of 3 legs. Overwrite with your data.\n"
+        << "Video guide coming soon!"
         << std::endl;
+
+        exitProgram();
 }
 
 void prepareChips(short pcaAmount) {
@@ -62,38 +66,7 @@ void autoRegister() {
             chip->addLeg(channels);
         }
     }
-    std::cout 
-        << "Legs and channels have been automatically registered from config.json.\n"
-        << "Returning to main menu...\n\n";
+    std::cout << "\nChips and channels have been automatically registered from config.json.\n";
 
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-}
-
-void manualRegister() {
-    std::cout << "Enter the amount of PCA9685 chips you're using:\n";
-    short pcaAmount;
-    std::cin >> pcaAmount;
-
-    prepareChips(pcaAmount);
-
-    for (auto& chip : chips) {
-        instructions();
-
-        std::cout << "Enter total amount of legs to configure for chip address " << chip->getAddress() <<":\n";
-        short legsAmount;
-        std::cin >> legsAmount;
-    
-        std::array<short, 3> channels;
-        
-        for (short leg = 1; leg <= legsAmount; leg++) {
-            std::cout << "\nEnter the 3 channels for leg " << leg << ", each separated by a space:\n";
-            std::cin >> channels[0] >> channels[1] >> channels[2];
-            chip->addLeg(channels);
-        }
-    }
-    std::cout 
-        << "Legs and channels have been manually registered\n"
-        << "Returning to main menu...\n\n";
-
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    exitProgram();
 }
