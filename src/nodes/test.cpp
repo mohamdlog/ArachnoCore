@@ -27,7 +27,7 @@ void move(std::vector<std::unique_ptr<PCA9685>>& chips) {
         }
     
         if (chipNumber == 0 || chipNumber > chips.size()) {
-            std::cout << "Error: chipNumber is out of bounds. Valid range is 1 to " << chips.size() << ".\n";
+            std::cout << "Error: chipNumber is out of bounds. The limit is " << chips.size() << ".\n";
             continue;
         }
     
