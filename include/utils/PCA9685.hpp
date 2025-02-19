@@ -4,10 +4,10 @@
 #include <vector>
 #include <cstdint>
 #include <memory>
+#include <thread>
 
 #include <sys/ioctl.h>
 #include <fcntl.h>
-#include <thread>
 
 extern "C" {
     #include <linux/i2c-dev.h>
