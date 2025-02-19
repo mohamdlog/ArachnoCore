@@ -1,4 +1,4 @@
-#include "Menu.hpp"
+#include "utils/menu.hpp"
 
 int main() {
     while (true) {

@@ -1,6 +1,6 @@
-#include "Menu.hpp"
-#include "MoverNode.hpp"
-#include "RobotConfig.hpp"
+#include "utils/menu.hpp"
+#include "nodes/test.hpp"
+#include "core/config.hpp"
 
 void mainMenu() {
     std::cout 
@@ -21,7 +21,6 @@ void mainMenu() {
             autoRegister();
             return;
         case 2:
-            manualRegister();
             return;
         case 3:
             move(chips);

@@ -1,6 +1,6 @@
 #include <fstream>
 #include "../external/json.hpp"
-#include "RobotConfig.hpp"
+#include "core/config.hpp"
 
 std::vector<std::unique_ptr<PCA9685>> chips;
 
@@ -64,35 +64,6 @@ void autoRegister() {
     }
     std::cout 
         << "Legs and channels have been automatically registered from config.json.\n"
-        << "Returning to main menu...\n\n";
-
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-}
-
-void manualRegister() {
-    std::cout << "Enter the amount of PCA9685 chips you're using:\n";
-    short pcaAmount;
-    std::cin >> pcaAmount;
-
-    prepareChips(pcaAmount);
-
-    for (auto& chip : chips) {
-        instructions();
-
-        std::cout << "Enter total amount of legs to configure for chip address " << chip->getAddress() <<":\n";
-        short legsAmount;
-        std::cin >> legsAmount;
-    
-        std::array<short, 3> channels;
-        
-        for (short leg = 1; leg <= legsAmount; leg++) {
-            std::cout << "\nEnter the 3 channels for leg " << leg << ", each separated by a space:\n";
-            std::cin >> channels[0] >> channels[1] >> channels[2];
-            chip->addLeg(channels);
-        }
-    }
-    std::cout 
-        << "Legs and channels have been manually registered\n"
         << "Returning to main menu...\n\n";
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
