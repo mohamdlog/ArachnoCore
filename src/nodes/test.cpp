@@ -1,12 +1,13 @@
 #include "nodes/test.hpp"
 #include "utils/utils.hpp"
+#include <opencv2/opencv.hpp>
 
-void move(std::vector<std::unique_ptr<PCA9685>>& chips) {
+void pulse(std::vector<std::unique_ptr<PCA9685>>& chips) {
     std::cout
-            << "\n=== For testing purposes ===\n\n"
+            << '\n' << std::string(50, '_') << "\n\n" 
             << "Enter PCA9865 chip number, leg number, channel number,\n"
             << "and pulse width in milliseconds to test movement.\n"
-            << "Press Enter at anytime to exit.\nExample Input: 2 1 0 1.5\n";
+            << "\nExample Input: 2 1 0 1.5\n";
     
     std::string input;
 
@@ -38,4 +39,25 @@ void move(std::vector<std::unique_ptr<PCA9685>>& chips) {
             << " received a " << pulse << "ms pulse.\n\n";
     }
 }
-    
+
+void camera() {
+    cv::VideoCapture cap(0, cv::CAP_V4L2);
+    if (!cap.isOpened()) {
+        std::cerr << "Error: Could not open camera";
+        return;
+    }
+
+    cv::Mat frame;
+    cap >> frame;
+
+    if (frame.empty()) {
+        std::cerr << "Error: Blank frame grabbed";
+        return;
+    }
+
+    cv::imwrite("captured_image.jpg", frame);
+
+    std::cout << "Image saved as captured_image.jpg" << std::endl;
+
+    cap.release();
+}

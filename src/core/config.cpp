@@ -37,7 +37,7 @@ void instructions() {
         << "Video guide coming soon!"
         << std::endl;
 
-        exitProgram();
+        checkExit();
 }
 
 void prepareChips(short pcaAmount) {
