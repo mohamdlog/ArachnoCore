@@ -1,12 +1,12 @@
 #include "utils/utils.hpp"
 
 void exitProgram() {
-    std::cout << "\nExiting to main menu...\n\n";
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::cout << "\nReturning to menu...\n\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(1250));
 }
 
 std::string checkExit() {
-    std::cout << "\nInput: ";
+    std::cout << "\nInput: (Enter to exit) ";
     std::string input;
     std::getline(std::cin, input);
 
